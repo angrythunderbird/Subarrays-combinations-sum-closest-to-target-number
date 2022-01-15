@@ -1,6 +1,3 @@
-// const ls = [51, 52, 58, 59, 61, 85, 92, 98];
-// const t = 545;
-// const k = 7;
 
 function generateGray(n) {
 
@@ -36,6 +33,10 @@ function chooseOptimalDistance(t, k, ls) {
 
   const arrLength = ls.length;
 
+  if (!ls.length || ls.length < k || k === 0 || t === 0) {
+    return null;
+  }
+
   const resArr = [];
 
   const corteges = generateGray(arrLength).filter(el => {
@@ -53,8 +54,8 @@ function chooseOptimalDistance(t, k, ls) {
     resArr.push(subArr);
   });
 
-  res = resArr.reduce((acc, el) => {
-    
+  res = resArr.reduce((acc, el, i) => {
+
     const elSum = el.reduce((sum, val) => {
       return sum + val;
     });
@@ -66,11 +67,11 @@ function chooseOptimalDistance(t, k, ls) {
       };
     });
 
-    if (arrLength === 0 || ls.length < k || t < elSum) {
-      return null;
-    }
+    const p = Math.abs(elSum - t) <= Math.abs(acc - t) ? elSum : acc;
 
-    return (Math.abs(elSum - t) <= Math.abs(acc - t) ? elSum : acc);
+    if (t < p) return null;
+
+    return p;
   }, 0);
 
   return res;
